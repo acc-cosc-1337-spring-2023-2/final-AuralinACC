@@ -9,7 +9,7 @@ void Roll::roll_die()
     value = die1.rolled_value() + die2.rolled_value();
     rolled = true;
 }
-int const Roll::roll_value()
+int Roll::roll_value() const 
 {
     //return value
     return value;
