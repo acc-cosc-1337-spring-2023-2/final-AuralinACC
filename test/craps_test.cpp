@@ -1,8 +1,11 @@
+//craps_test.cpp
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.hpp"
 #include "die.h"
 #include "roll.h"
 #include "shooter.h"
+#include "come_out_phase.h"
+#include "point_phase.h"
 
 TEST_CASE("Verify Test Configuration", "verification") {
 	REQUIRE(true == true);
@@ -53,5 +56,65 @@ TEST_CASE("Test return and verify that the roll result has value from 2 to 12")
 		//(loop 10 times and create and assert in the loop)
 		REQUIRE(roll_value >= 2);
 		REQUIRE(roll_value <= 12);
+	}
+}
+
+TEST_CASE("Test ComeOutPhase get_outcomes returns values natural, craps, and point")
+{
+	Die die1;
+	Die die2;
+	Roll roll(die1, die2);
+	ComeOutPhase test;
+
+	//instructions didn't say how many times to test
+	//I didn't feel 10 was enough given the complexity
+	//for me the test ran fine with 1000 assertions
+	for(int i = 0; i < 1000; i++) 
+	{
+		roll.roll_die();
+		int roll_value = roll.roll_value();
+		RollOutcome outcome = test.get_outcome(&roll);
+
+		if(roll_value == 7 || roll_value == 11)
+		{
+			REQUIRE(outcome == RollOutcome::natural);
+		}
+		else if(roll_value == 2 || roll_value == 3 || roll_value == 12)
+		{
+			REQUIRE(outcome == RollOutcome::craps);
+		}
+		else
+		{
+			REQUIRE(outcome == RollOutcome::point);
+		}
+	}
+}
+
+TEST_CASE("Test PointPhase get_coutcomes returns values point, seven_out, and nopoint")
+{
+	Die die1;
+	Die die2;
+	Roll roll(die1, die2);
+	int point = 4;
+	PointPhase test(point);
+	
+	for(int i = 0; i < 1000; i++)
+	{
+		roll.roll_die();
+		int roll_value = roll.roll_value();
+		RollOutcome outcome = test.get_outcome(&roll);
+
+		if(roll_value == point)
+		{
+			REQUIRE(outcome == RollOutcome::point);
+		}
+		else if(roll_value == 7)
+		{
+			REQUIRE(outcome == RollOutcome::seven_out);
+		}
+		else
+		{
+			REQUIRE(outcome == RollOutcome::nopoint);
+		}
 	}
 }
