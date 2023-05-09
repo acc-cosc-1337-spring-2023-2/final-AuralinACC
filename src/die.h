@@ -1,5 +1,6 @@
 //die.h
 #include<stdlib.h>
+#include <ctime> //moved from die.cpp to allow main to use time
 
 #ifndef DIE_H
 #define DIE_H

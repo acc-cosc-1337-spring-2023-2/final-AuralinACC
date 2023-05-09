@@ -15,11 +15,16 @@ Roll* Shooter::throw_die(Die& die1, Die& die2)
 std::ostream& operator<<(std::ostream& out, const Shooter& shooter)
 {
     //output vector of Roll*
-    int i = 1;
+    /*int i = 1;
     for(const Roll* roll : shooter.rolls) //fixed error: changed to range based for loop
     {
         out << "Roll " << i << ": " << roll->roll_value() << "\n";
         i++;
+    }*/ 
+    //simplifying output to match Example output
+    for(const Roll* roll : shooter.rolls)
+    {
+        out<<roll->roll_value() <<"\n";
     }
     return out; // allows for chained output 
 }
